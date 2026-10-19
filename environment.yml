@@ -1,4 +1,4 @@
-name: python-analysis-template
+name: prm
 channels:
   - defaults
   - conda-forge
