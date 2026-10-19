@@ -1,0 +1,22 @@
+name: python-analysis-template
+channels:
+  - defaults
+  - conda-forge
+  - bioconda
+dependencies:
+  - pip
+  - ipython
+  - ipykernel
+  - snakemake-minimal
+  - iprogress
+
+  - matplotlib
+  - seaborn
+  - pandas
+  - scipy
+  - numpy 
+  - jupyter
+  - unyt
+  
+  - pip:
+    - python-dotenv

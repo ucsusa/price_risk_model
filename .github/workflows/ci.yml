@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  setup:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+      fail-fast: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read environment name from environment.yml
+        id: env-name
+        shell: python
+        run: |
+          import re, os
+          with open("environment.yml") as f:
+            for line in f:
+              match = re.match(r"^name:\s*(\S+)", line)
+              if match:
+                with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+                  out.write(f"env_name={match.group(1)}\n")
+                break
+
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: ${{ steps.env-name.outputs.env_name }}
+          environment-file: environment.yml
+          auto-activate-base: false
